@@ -1,0 +1,57 @@
+{
+    "name": "pug-a-tron",
+    "version": "1.0.0",
+    "description": "Demo lambda function with pugs!",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "sls offline start --port 5000",
+        "start:inspect": "node --inspect `which serverless` offline start --port 5000",
+        "deploy:all-dev": "sls deploy --stage dev",
+        "deploy:all-prod": "sls deploy --stage prod",
+        "logs": "sls logs -f pug-df",
+        "format": "prettier --config \".prettierrc.json\" --write \"**/*.{js,jsx}\"",
+        "format:quick": "pretty-quick",
+        "docker:build": "docker build -t sls-deploy .",
+        "docker:run": "docker run -it -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN -e AWS_SECURITY_TOKEN:$AWS_SECURITY_TOKEN sls-deploy"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:JMSantos94/pug-a-tron.git"
+    },
+    "keywords": [],
+    "author": "Jose Santos <josemsantos1994@gmail.com>",
+    "license": "MIT",
+    "homepage": "https://github.com/JMSantos94/pug-a-tron",
+    "devDependencies": {
+        "@babel/core": "^7.4.3",
+        "@babel/preset-env": "^7.4.3",
+        "@babel/preset-react": "^7.0.0",
+        "babel-loader": "^8.0.5",
+        "babel-plugin-source-map-support": "^2.0.1",
+        "copy-webpack-plugin": "^5.0.2",
+        "file-loader": "^3.0.1",
+        "prettier": "^1.16.4",
+        "pretty-quick": "^1.10.0",
+        "serverless-apigw-binary": "^0.4.4",
+        "serverless-domain-manager": "^3.2.1",
+        "serverless-offline": "^4.9.4",
+        "serverless-webpack": "^5.2.0",
+        "webpack": "^4.29.6",
+        "webpack-node-externals": "^1.7.2"
+    },
+    "dependencies": {
+        "@react-pdf/renderer": "^1.5.4",
+        "aws-sdk": "^2.441.0",
+        "canvas": "^2.4.1",
+        "chart.js": "^2.8.0",
+        "chartjs-node-canvas": "^2.2.4",
+        "chartjs-plugin-datalabels": "^0.6.0",
+        "color": "^3.1.1",
+        "fresh-require": "^1.0.3",
+        "node-fetch": "^2.3.0",
+        "prop-types": "^15.7.2",
+        "react": "^16.8.6",
+        "source-map-support": "^0.5.12",
+        "url-loader": "^1.1.2"
+    }
+}
