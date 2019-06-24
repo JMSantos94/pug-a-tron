@@ -1,0 +1,15 @@
+{
+    "comments": false,
+    "presets": [
+        [
+            "@babel/env",
+            {
+                "targets": {
+                    "node": "10.15"
+                }
+            }
+        ],
+        "@babel/preset-react"
+    ],
+    "plugins": ["source-map-support"]
+}
