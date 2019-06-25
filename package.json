@@ -45,7 +45,6 @@
         "canvas": "^2.4.1",
         "chart.js": "^2.8.0",
         "chartjs-node-canvas": "^2.2.4",
-        "chartjs-plugin-datalabels": "^0.6.0",
         "color": "^3.1.1",
         "fresh-require": "^1.0.3",
         "node-fetch": "^2.3.0",

@@ -1,68 +1,10 @@
 import { CanvasRenderService } from 'chartjs-node-canvas';
 
-import formatPercentage from '../utils/formatters/percentage';
 import formatDecimal from '../utils/formatters/decimal';
 
 const { registerFont } = require('canvas');
 
-import defaultColors from './default-colors';
-
 registerFont('./fonts/pns-regular-webfont.ttf', { family: 'pnregular' });
-
-const decimal = formatDecimal();
-
-const optionsByType = {
-    pie: {
-        maintainAspectRatio: false,
-        responsive: true,
-        legend: {
-            display: false,
-        },
-        cutoutPercentage: 50,
-        plugins: {
-            datalabels: {
-                color: 'white',
-                font: {
-                    size: 40,
-                    weight: 'bold',
-                    family: 'pnregular',
-                },
-                anchor: 'center',
-            },
-        },
-    },
-    polarArea: {
-        maintainAspectRatio: false,
-        responsive: true,
-        legend: {
-            display: false,
-        },
-        cutoutPercentage: 50,
-        scale: {
-            gridLines: {
-                lineWidth: 2.25,
-                color: '#c6c6c6',
-            },
-            ticks: {
-                fontSize: 30,
-                showLabelBackdrop: true,
-                backdropColor: 'white',
-                backdropPaddingY: 5,
-                backdropPaddingX: 5,
-                fontColor: '#636363',
-                fontFamily: 'pnregular',
-                callback: function(value) {
-                    return decimal.format(value);
-                },
-            },
-        },
-        plugins: {
-            datalabels: {
-                display: false,
-            },
-        },
-    },
-};
 
 const chartCallback = ChartJS => {
     // ChartJS.plugins.register(LabelsPlugin);
@@ -70,46 +12,93 @@ const chartCallback = ChartJS => {
 
 const chartJsFactory = () => {
     const chartJS = require('chart.js');
-    require('chartjs-plugin-datalabels');
     delete require.cache[require.resolve('chart.js')];
-    delete require.cache[require.resolve('chartjs-plugin-datalabels')];
     return chartJS;
 };
 
-const borderRatio = 0.01;
+const generateDates = count =>
+    Array.from({ length: count }).reduce((acc, _, index) => {
+        const d = new Date();
+        d.setDate(d.getDate() - index);
+        acc.unshift(d.toLocaleDateString());
+        return acc;
+    }, []);
+
+const generateValues = (count, { from = 200, to = 500 } = {}) =>
+    Array.from({ length: count }).reduce(acc => {
+        const value = Math.floor(Math.random() * (to - from) + from);
+        acc.push(value);
+        return acc;
+    }, []);
 
 async function graphImageGenerator(
     { labels = [], data = [] } = {},
-    {
-        type = 'pie',
-        height = 500,
-        width = 500,
-        colors = ['#00c4b4', '#ff5a34', ...defaultColors],
-        locale = 'en-US',
-    } = {},
+    { height = 500, width = 300 } = {},
 ) {
-    const options = optionsByType[type];
+    const dates = generateDates(7);
+    const values = generateValues(7);
 
-    const formatters = {
-        percentage: formatPercentage(locale).format,
-    };
+    const color = '#f4427d';
 
     const configuration = {
-        type,
-        options,
-        data: {
-            labels,
-            datasets: [
+        type: 'line',
+        maintainAspectRatio: false,
+        responsive: true,
+        legend: {
+            display: false,
+        },
+        scales: {
+            xAxes: [
                 {
-                    data,
-                    backgroundColor: colors,
-                    borderColor: '#ffffff',
-                    borderWidth: ((height + width) / 2) * borderRatio,
-                    datalabels: {
-                        formatter: formatters.percentage,
+                    type: 'time',
+                    time: {
+                        minUnit: 'day',
                     },
                 },
             ],
+            yAxes: [
+                {
+                    type: 'linear',
+                    ticks: {
+                        beginAtZero: true,
+                        callback: () => '$',
+                    },
+                },
+            ],
+        },
+        data: {
+            labels: dates,
+            datasets: [
+                {
+                    label: 'Pug Stocks',
+                    lineTension: 0,
+                    backgroundColor: color,
+                    borderColor: color,
+                    borderCapStyle: 'butt',
+                    borderWidth: 1.5,
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: '#fff',
+                    pointBackgroundColor: color,
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 2,
+                    pointHoverBackgroundColor: color,
+                    pointHoverBorderColor: color,
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHitRadius: 10,
+                    data: values,
+                    fill: false,
+                    borderWidth: 2,
+                },
+            ],
+        },
+
+        plugins: {
+            datalabels: {
+                display: false,
+            },
         },
     };
 

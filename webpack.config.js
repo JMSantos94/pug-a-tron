@@ -22,7 +22,7 @@ module.exports = {
     plugins: [
         new CopyPlugin([
             { from: 'fonts', to: 'fonts' },
-            { from: 'src/assets/logos', to: 'images' },
+            { from: 'src/assets', to: 'images' },
         ]),
     ],
     module: {
