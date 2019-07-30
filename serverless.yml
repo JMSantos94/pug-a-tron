@@ -1,4 +1,4 @@
-service: sports-report-renderer
+service: pug-a-tron
 
 provider:
   name: aws
@@ -41,7 +41,7 @@ resources:
     generatePdfRole:
       Type: AWS::IAM::Role
       Properties:
-        RoleName: 'Generate_PDF_MVC_Role-${self:provider.stage}'
+        RoleName: 'Generate_PDF_Role-${self:provider.stage}'
         AssumeRolePolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -78,8 +78,8 @@ resources:
                 - Effect: Allow
                   Action:
                     - s3:PutObject
-                  Resource: "arn:aws:s3:::gumgum-sports-cdn/mvc_client_reports_pdf/*"
+                  Resource: "arn:aws:s3:::s3-bucket-name/*"
                 - Effect: Allow
                   Action:
                     - s3:PutObject
-                  Resource: "arn:aws:s3:::gumgum-sports-cdn/mvc_client_single_posts_pdf/*"
+                  Resource: "arn:aws:s3:::s3-bucket-name/*"

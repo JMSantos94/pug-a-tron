@@ -31,6 +31,8 @@ const generateValues = (count, { from = 200, to = 500 } = {}) =>
         return acc;
     }, []);
 
+const decimal = formatDecimal();
+
 async function graphImageGenerator(
     { labels = [], data = [] } = {},
     { height = 500, width = 300 } = {},
@@ -44,27 +46,42 @@ async function graphImageGenerator(
         type: 'line',
         maintainAspectRatio: false,
         responsive: true,
-        legend: {
-            display: false,
-        },
-        scales: {
-            xAxes: [
-                {
-                    type: 'time',
-                    time: {
-                        minUnit: 'day',
-                    },
+        options: {
+            legend: {
+                labels: {
+                    fontSize: 14,
+                    fontColor: '#969696',
                 },
-            ],
-            yAxes: [
-                {
-                    type: 'linear',
-                    ticks: {
-                        beginAtZero: true,
-                        callback: () => '$',
+            },
+            scales: {
+                xAxes: [
+                    {
+                        type: 'time',
+                        time: {
+                            minUnit: 'day',
+                        },
+                        gridLines: {
+                            color: '#d1d1d1',
+                        },
+                        ticks: {
+                            fontSize: 14,
+                        },
                     },
-                },
-            ],
+                ],
+                yAxes: [
+                    {
+                        type: 'linear',
+                        gridLines: {
+                            color: '#d1d1d1',
+                        },
+                        ticks: {
+                            fontSize: 14,
+                            beginAtZero: true,
+                            callback: value => `$${decimal.format(value)}`,
+                        },
+                    },
+                ],
+            },
         },
         data: {
             labels: dates,
@@ -93,12 +110,6 @@ async function graphImageGenerator(
                     borderWidth: 2,
                 },
             ],
-        },
-
-        plugins: {
-            datalabels: {
-                display: false,
-            },
         },
     };
 

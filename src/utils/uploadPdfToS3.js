@@ -2,39 +2,14 @@ import aws from 'aws-sdk';
 
 aws.config.region = 'us-east-1';
 
-const uploadPdfToS3 = (BUCKET, FOLDER_PATH, isReport) => (
-    stream,
-    filename,
-    clientId,
-) => {
+const uploadPdfToS3 = (BUCKET, FOLDER_PATH) => (stream, filename) => {
     return new Promise(async function(res, rej) {
-        // const sts = new aws.STS();
-        // sts.assumeRole(
-        //     {
-        //         RoleArn: 'arn:aws:iam::564061425806:role/AssumeSports',
-        //         RoleSessionName: 'sports',
-        //     },
-        //     function(err, data) {
-        //         if (err) {
-        //             // an error occurred
-        //             console.log('Cannot assume role');
-        //             console.log(err, err.stack);
-        //         } else {
-        //             // successful response
-        //             aws.config.update({
-        //                 accessKeyId: data.Credentials.AccessKeyId,
-        //                 secretAccessKey: data.Credentials.SecretAccessKey,
-        //                 sessionToken: data.Credentials.SessionToken,
-        //             });
-
         const s3 = new aws.S3();
         const timestamp = Date.now();
 
-        const key = isReport
-            ? `${FOLDER_PATH}/${clientId}/${filename}-${timestamp}.pdf`
-            : `${FOLDER_PATH}/${timestamp}.pdf`;
+        const key = `${FOLDER_PATH}/${filename}-${timestamp}.pdf`;
 
-        var params = {
+        const params = {
             Key: key,
             Bucket: BUCKET,
             Body: stream,
@@ -44,7 +19,7 @@ const uploadPdfToS3 = (BUCKET, FOLDER_PATH, isReport) => (
         // Notice use of the upload function, not the putObject function
         s3.upload(params, function(err, response) {
             if (err) console.error(err);
-            res('https://sports-cdn.ggops.com/' + key);
+            res('https://your-domain-here.com/' + key);
         });
     });
 };
