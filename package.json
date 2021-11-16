@@ -41,7 +41,7 @@
     },
     "dependencies": {
         "@react-pdf/renderer": "^1.5.4",
-        "aws-sdk": "^2.441.0",
+        "aws-sdk": "^2.814.0",
         "canvas": "^2.4.1",
         "chart.js": "^2.8.0",
         "chartjs-node-canvas": "^2.2.4",
